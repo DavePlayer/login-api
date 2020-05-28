@@ -5,7 +5,7 @@ require('dotenv').config()
 class dataBase {
     constructor(){
         this.defaultMongoAdress = process.env.DB;
-        this.user = User;
+        this.users = User;
     };
 
     connect = (addr) => {
@@ -21,14 +21,14 @@ class dataBase {
     };
 
     getAllUsers = (res) => {
-        this.user.find()
+        this.users.find()
             .then( (user) => res.json(user))
             .catch(err => err.message)
     }
 
     addUser = (req, res) => {
         console.log(req.body, "cos robie")
-        const tempUser = new this.user({
+        const tempUser = new this.users({
             login: req.body.login,
             password: req.body.password,
             email: req.body.email
@@ -36,7 +36,15 @@ class dataBase {
         tempUser.save()
             .then(user => res.json(user))
     }
-
+    deleteUser = (req, res) => {
+        this.users.findById(req.params.id)
+            .then(user => user.remove())
+            .then(user => res.json({
+                status: "deleted propearly user",
+                user
+            }))
+            .catch(err => err.message)
+    }
 
 }
 
