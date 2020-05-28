@@ -4,11 +4,11 @@ const db = require('./../dataBase.js')
 
 
 //@GET get all users
-router.get('/', (req, res) => {
-    db.user.find()
-        .then( (user) => {
-            res.json(user)
-        })
+router.get('/', (req, res) => db.getAllUsers(res) )
+
+//POST create new user
+router.post('/', (req, res) => {
+    db.addUser(req, res)
 })
 
 module.exports = router
