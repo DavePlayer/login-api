@@ -27,14 +27,17 @@ class dataBase {
     }
 
     addUser = (req, res) => {
-        console.log(req.body, "cos robie")
         const tempUser = new this.users({
             login: req.body.login,
             password: req.body.password,
             email: req.body.email
         }) 
         tempUser.save()
-            .then(user => res.json(user))
+            .then(user => res.json({
+                status: "properly added new user",
+                user
+            }))
+            .catch(err => err.message)
     }
     deleteUser = (req, res) => {
         this.users.findById(req.params.id)
