@@ -1,12 +1,11 @@
 const express = require('express')
-const User = require('./../models/user.js')
-
 const router = express.Router()
+const db = require('./../dataBase.js')
 
 
-//get all users
+//@GET get all users
 router.get('/', (req, res) => {
-    User.find()
+    db.user.find()
         .then( (user) => {
             res.json(user)
         })
