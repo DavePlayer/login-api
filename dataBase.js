@@ -27,18 +27,31 @@ class dataBase {
     }
 
     addUser = (req, res) => {
+        const {login, password, email} = req.body
+
+        // check if data exits
+        if(!login || !password || !email)
+        return res.status(400).json({
+            status: "parsed invalid data"
+        })
+        
+        //check if user with mail exist
+        this.users.findOne({ email })
+            .then(user => user ? res.status(400).json({status: "user already exists"}) : null)
+        
         const tempUser = new this.users({
-            login: req.body.login,
-            password: req.body.password,
-            email: req.body.email
-        }) 
+            login: login,
+            password: password,
+            email: email
+        })
+        
         tempUser.save()
             .then(user => res.json({
                 status: "properly added new user",
                 user
             }))
             .catch(err => err.message)
-    }
+        }
     deleteUser = (req, res) => {
         this.users.findById(req.params.id)
             .then(user => user.remove())
